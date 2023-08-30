@@ -48,7 +48,6 @@ namespace Spies
         // Token: 0x06000025 RID: 37 RVA: 0x000024CC File Offset: 0x000006CC
         public void PlayerOnHurting(HurtingEventArgs ev)
         {
-            Log.Debug("EVENTO ONHURTING FUNCIONA");
 
             if (ev.Attacker == null)
             {
@@ -65,7 +64,15 @@ namespace Spies
 
             if (ev.Player.SessionVariables["IsASpyx"].Equals(true))
             {
-                spyattacked = true;
+                if (plugin.Config.SpyReceiveDamageFromSpied == false && ev.Attacker.LeadingTeam == ev.Player.LeadingTeam)
+                {
+                    ev.IsAllowed = false;
+                }
+                else
+                {
+                    spyattacked = true;
+                }
+                
             }
             if (!ev.Attacker.SessionVariables["IsASpyx"].Equals(true) || ev.Attacker.SessionVariables["IsASpyx"] is null)
             {
@@ -73,10 +80,19 @@ namespace Spies
             }
             if (ev.Attacker.SessionVariables["IsASpyx"].Equals(true))
             {
-                spyattacks = true;
+                if(plugin.Config.SpyRevealWhenDamaging == true && ev.Player.LeadingTeam == ev.Attacker.LeadingTeam)
+                {
+                    RevealPlayer(ev.Attacker);
+                    ev.Attacker.SessionVariables["IsASpyx"].Equals(false);
+                }
+                else
+                {
+                    spyattacks = true;
+                }
+                
 
             }
-            Log.Debug($"{spyattacks},{spyattacked}");
+
             if (ev.Attacker.LeadingTeam != ev.Player.LeadingTeam && spyattacked && ev.Attacker.IsHuman)
             {
                 if (!ev.Attacker.IsCHI && !ev.Attacker.IsNTF) return;

@@ -35,4 +35,10 @@ public class Config : IConfig
 
     [Description("Message shown when a spy shoots another spy from its REAL team")]
     public string SpyTKSpyMessage { get; set; } = "You are shooting another spy!";
+
+    [Description("The spy cannot take damage from the team they are spying while being a spy")]
+    public bool SpyReceiveDamageFromSpied { get; set; } = true;
+
+    [Description("Should the spy get discovered whe he damages the team he is spying?")]
+    public bool SpyRevealWhenDamaging { get; set; } = true;
 }
