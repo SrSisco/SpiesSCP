@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;

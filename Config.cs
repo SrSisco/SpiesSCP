@@ -1,4 +1,4 @@
-﻿using Exiled.API.Features;
+using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs;
 using System.ComponentModel;
