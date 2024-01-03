@@ -7,7 +7,7 @@ namespace Spies
         private EventHandlers EventHandler;
         public override string Name => "Spies";
         public override string Author => "srsisco";
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 2, 0);
 
         public override void OnEnabled()
         {
