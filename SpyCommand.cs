@@ -6,13 +6,13 @@ using Exiled.API.Features;
 using MEC;
 using PlayerRoles;
 
-namespace Spies
+namespace SpiesSCP
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class SpyCommand : ICommand
     {
         public string Command => "spy";
-        public string[] Aliases { get; } = {};
+        public string[] Aliases { get; } = { };
         public string Description => "Forces a person to be a chaos/ntf spy";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -36,8 +36,10 @@ namespace Spies
             string a = arguments.At(1);
             if (a == "ntf")
             {
-                player.Role.Set(RoleTypeId.NtfSergeant, SpawnReason.ForceClass, RoleSpawnFlags.All);
                 player.SessionVariables["IsASpyx"] = true;
+                player.Role.Set(RoleTypeId.NtfSergeant, SpawnReason.ForceClass, RoleSpawnFlags.All);
+                Timing.RunCoroutine(EventHandlers.RevealTimer(player));
+                player.Broadcast(10, SpiesSCP.Instance.Config.StartMessage + SpiesSCP.Instance.Config.SpyTKFactor, Broadcast.BroadcastFlags.Normal, true);
                 response = "Player revived as ntf, chaos spy";
                 return true;
             }
@@ -46,11 +48,13 @@ namespace Spies
                 response = "Please, select between chaos or ntf";
                 return false;
             }
-            player.Role.Set(RoleTypeId.ChaosRifleman, SpawnReason.ForceClass, RoleSpawnFlags.All);
             player.SessionVariables["IsASpyx"] = true;
+            player.Role.Set(RoleTypeId.ChaosRifleman, SpawnReason.ForceClass, RoleSpawnFlags.All);
+            Timing.RunCoroutine(EventHandlers.RevealTimer(player));
+            player.Broadcast(10, SpiesSCP.Instance.Config.StartMessage + SpiesSCP.Instance.Config.SpyTKFactor, Broadcast.BroadcastFlags.Normal, true);
             response = "Player revived as chaos, ntf spy";
             return true;
         }
-    
+
     }
 }
