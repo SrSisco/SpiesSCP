@@ -284,14 +284,14 @@ namespace SpiesSCP
 
             for (int i = 0; i < SpiesSCP.Instance.Config.StartingInventories["Spy"].UsedSlots; i++)
             {
-                IEnumerable<ItemChance> itemChances = SpiesSCP.Instance.Config.StartingInventories["Spy"][i].Where(x => player == null || string.IsNullOrEmpty(x.Group) || x.Group == "none" || (ServerStatic.PermissionsHandler._groups.TryGetValue(x.Group, out var group) && group == player.Group));
+                IEnumerable<ItemChance> itemChances = SpiesSCP.Instance.Config.StartingInventories["Spy"][i];
                 double r;
                 if (SpiesSCP.Instance.Config.AdditiveProbabilities)
                     r = SpiesSCP.Instance.Rng.NextDouble() * itemChances.Sum(val => val.Chance);
                 else
                     r = SpiesSCP.Instance.Rng.NextDouble() * 100;
                 Log.Debug($"[StartItems] ActualChance ({r})/{itemChances.Sum(val => val.Chance)}");
-                foreach ((string item, double chance, string groupKey) in itemChances)
+                foreach ((string item, double chance) in itemChances)
                 {
                     Log.Debug($"[StartItems] Probability ({r})/{chance}");
                     if (r <= chance)

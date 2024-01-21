@@ -74,19 +74,15 @@ spies:
       slot3:
       - item_name: 'Medkit'
         chance: 100
-        group: 'none'
       slot4:
       - item_name: 'Radio'
         chance: 100
-        group: 'none'
       slot5:
       - item_name: 'SCP268'
         chance: 100
-        group: 'none'
       slot6:
       - item_name: 'ArmorCombat'
         chance: 100
-        group: 'none'
       slot7: []
       slot8: []
 ```
