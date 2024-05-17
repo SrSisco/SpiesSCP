@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using CommandSystem;
 using Exiled.API.Features;
+using SpiesSCP;
 
-namespace Spies
+namespace SpiesSCP
 {
     [CommandHandler(typeof(ClientCommandHandler))]
     public class RevealCommand : ICommand
@@ -18,20 +19,20 @@ namespace Spies
                 response = "The round must be in progress.";
                 return false;
             }
+
             Player player = Player.Get(sender);
-            if (player.SessionVariables["IsASpyx"].Equals(false))
+
+            if (player.SessionVariables["IsASpyx"] is false)
             {
                 response = "You are not a spy.";
                 return false;
             }
-            if (player.SessionVariables["IsASpyx"].Equals(true))
+            else
             {
                 EventHandlers.RevealPlayer(player);
                 response = "You have been revealed.";
                 return true;
             }
-            response = "lol? how did you get here xdddd";
-            return false;
         }
     }
 }

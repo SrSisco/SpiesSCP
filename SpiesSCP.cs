@@ -15,8 +15,6 @@ namespace SpiesSCP
 
         public EventHandlers _handlers;
 
-        public Random Rng = new();
-
         public override void OnEnabled()
         {
             Instance = this;
@@ -31,7 +29,6 @@ namespace SpiesSCP
             Exiled.Events.Handlers.Server.RespawningTeam += _handlers.ServerOnRespawningTeam;
             Exiled.Events.Handlers.Player.SpawningRagdoll += _handlers.OnPlayerSpawningRagdoll;
 
-            Log.Info("Spies has been enabled.");
             base.OnEnabled();
 
         }
@@ -50,7 +47,6 @@ namespace SpiesSCP
 
             Instance = null;
 
-            Log.Info("Spies has been disabled.");
             base.OnDisabled();
         }
     }
