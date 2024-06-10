@@ -1,5 +1,4 @@
-using Exiled.API.Features;
-using Exiled.API.Interfaces;
+﻿using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs;
 using PlayerRoles;
 using SpiesSCP.ConfigObjects;

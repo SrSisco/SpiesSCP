@@ -26,7 +26,7 @@ namespace SpiesSCP
         {
             if (ev.NextKnownTeam == SpawnableTeamType.ChaosInsurgency && UnityEngine.Random.Range(0f, 100f) <= SpiesSCP.Instance.Config.NTFSpySpawnProbabilityInChaosWave)
             {
-                Player player = ev.Players[UnityEngine.Random.Range(0, ev.Players.Count)];
+                Player player = Player.List.GetRandomValue();
                 player.SessionVariables["IsASpyx"] = true;
                 Log.Debug(player.Nickname + " respawned as a spy");
 
@@ -36,7 +36,7 @@ namespace SpiesSCP
             }
             if (ev.NextKnownTeam == SpawnableTeamType.NineTailedFox && UnityEngine.Random.Range(0f, 100f) <= SpiesSCP.Instance.Config.ChaosSpySpawnProbabilityInNTFWave)
             {
-                Player player2 = ev.Players[UnityEngine.Random.Range(0, ev.Players.Count)];
+                Player player2 = Player.List.GetRandomValue();
                 player2.SessionVariables["IsASpyx"] = true;
                 Log.Debug(player2.Nickname + " respawned as a spy");
 
@@ -53,7 +53,7 @@ namespace SpiesSCP
                 return;
             }
 
-            if (ev.Player.SessionVariables["IsASpyx"].Equals(false) || ev.Player.SessionVariables["IsASpyx"] is null)
+            if (ev.Player.SessionVariables["IsASpyx"] is false || ev.Player.SessionVariables["IsASpyx"] is null)
             {
                 return;
             }
@@ -73,7 +73,7 @@ namespace SpiesSCP
                 return;
             }
 
-            if (ev.Player.SessionVariables["IsASpyx"].Equals(false)  || ev.Player.SessionVariables["IsASpyx"] is null) // leaves custom inventory if player isnt a spy
+            if (ev.Player.SessionVariables["IsASpyx"] is false  || ev.Player.SessionVariables["IsASpyx"] is null) // leaves custom inventory if player isnt a spy
             {
                 return;
             }
@@ -148,12 +148,12 @@ namespace SpiesSCP
             {
                 return;
             }
-            if (ev.Player.SessionVariables["IsASpyx"].Equals(false) || ev.Player.SessionVariables["IsASpyx"] is null)
+            if (ev.Player.SessionVariables["IsASpyx"] is false || ev.Player.SessionVariables["IsASpyx"] is null)
             {
                 spyattacked = false;
             }
 
-            if (ev.Player.SessionVariables["IsASpyx"].Equals(true))
+            if (ev.Player.SessionVariables["IsASpyx"] is true)
             {
                 if (SpiesSCP.Instance.Config.SpyReceiveDamageFromSpied == false && ev.Attacker.LeadingTeam == ev.Player.LeadingTeam)
                 {
@@ -165,16 +165,18 @@ namespace SpiesSCP
                 }
 
             }
-            if (!ev.Attacker.SessionVariables["IsASpyx"].Equals(true) || ev.Attacker.SessionVariables["IsASpyx"] is null)
+
+            if (ev.Attacker.SessionVariables["IsASpyx"] is false || ev.Attacker.SessionVariables["IsASpyx"] is null)
             {
                 spyattacks = false;
             }
-            if (ev.Attacker.SessionVariables["IsASpyx"].Equals(true))
+
+            if (ev.Attacker.SessionVariables["IsASpyx"] is true)
             {
                 if (SpiesSCP.Instance.Config.SpyRevealWhenDamaging == true && ev.Player.LeadingTeam == ev.Attacker.LeadingTeam)
                 {
                     RevealPlayer(ev.Attacker);
-                    ev.Attacker.SessionVariables["IsASpyx"].Equals(false);
+                    ev.Attacker.SessionVariables["IsASpyx"] = false;
                 }
                 else
                 {
@@ -245,7 +247,7 @@ namespace SpiesSCP
             {
                 return;
             }
-            if (player.SessionVariables["IsASpyx"].Equals(false))
+            if (player.SessionVariables["IsASpyx"] is false)
             {
                 return;
             }
@@ -287,10 +289,11 @@ namespace SpiesSCP
                 IEnumerable<ItemChance> itemChances = SpiesSCP.Instance.Config.StartingInventories["Spy"][i];
                 double r;
                 if (SpiesSCP.Instance.Config.AdditiveProbabilities)
-                    r = SpiesSCP.Instance.Rng.NextDouble() * itemChances.Sum(val => val.Chance);
+                    r = UnityEngine.Random.Range(0f, 1f) * itemChances.Sum(val => val.Chance);
                 else
-                    r = SpiesSCP.Instance.Rng.NextDouble() * 100;
+                    r = UnityEngine.Random.Range(0f, 100f);
                 Log.Debug($"[StartItems] ActualChance ({r})/{itemChances.Sum(val => val.Chance)}");
+
                 foreach ((string item, double chance) in itemChances)
                 {
                     Log.Debug($"[StartItems] Probability ({r})/{chance}");
@@ -311,7 +314,7 @@ namespace SpiesSCP
                             break;
                         }
                         else
-                            Log.Warn($"{nameof(StartItems)}: {item} is not a valid ItemType or it is a CustomItem that is not installed! It is being skipper in inventory decisions.");
+                            Log.Warn($"{nameof(StartItems)}: {item} is not a valid ItemType!");
                     }
 
                     r -= chance;

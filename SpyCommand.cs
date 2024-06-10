@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
@@ -40,10 +40,10 @@ namespace SpiesSCP
                 player.Role.Set(RoleTypeId.NtfSergeant, SpawnReason.ForceClass, RoleSpawnFlags.All);
                 Timing.RunCoroutine(EventHandlers.RevealTimer(player));
                 player.Broadcast(10, SpiesSCP.Instance.Config.StartMessage + SpiesSCP.Instance.Config.SpyTKFactor, Broadcast.BroadcastFlags.Normal, true);
-                response = "Player revived as ntf, chaos spy";
+                response = "Player revived as NTF spy";
                 return true;
             }
-            if (!(a == "chaos"))
+            if (a != "chaos")
             {
                 response = "Please, select between chaos or ntf";
                 return false;
@@ -52,7 +52,7 @@ namespace SpiesSCP
             player.Role.Set(RoleTypeId.ChaosRifleman, SpawnReason.ForceClass, RoleSpawnFlags.All);
             Timing.RunCoroutine(EventHandlers.RevealTimer(player));
             player.Broadcast(10, SpiesSCP.Instance.Config.StartMessage + SpiesSCP.Instance.Config.SpyTKFactor, Broadcast.BroadcastFlags.Normal, true);
-            response = "Player revived as chaos, ntf spy";
+            response = "Player revived as Chaos spy";
             return true;
         }
 
